@@ -1,28 +1,29 @@
 import { UI } from './ui_types.mjs';
-import { implement_ui } from './ui_implementation.mjs';
+import { implement_into } from './ui_implementation.mjs';
+import { arguments_to_settings } from './argument_parsing.mjs';
 
 
 
-export class NodeEditor {
-	constructor(width, height) {
-		this.initial_parameters = {width, height};
+export class NodeEditor extends UI.base {
+	constructor() {
+		const defaults = {
+		};
+
+		super(arguments_to_settings(defaults, ...arguments));
+
 	}
 
-	implement(target) {
-		/* Adds the HTML DOM elements needed to the target as children */
+	implement_into(target) {
 
-		this.dom = implement_ui(
-			new UI.canvas(),
-			new UI.toolbar(
-				new UI.button('navigate.forward', {text: '→'}),
-				new UI.button('navigate.back', {text: '←'}),
-				new UI.button('reset_view', {text: 'Reset View'}),
-				{button_scaling: 'text.character_length'},
-			),
-			{test: 123},
+		const canvas = new UI.Canvas({width: this.width, height: this.height});
+		const toolbar = new UI.Toolbar(
+			new UI.Button({id: 'navigate.forward', text: '→'}),
+			new UI.Button({id: 'navigate.back', text: '←'}),
+			new UI.Button({id: 'reset_view', text: 'Reset View'}),
+			{button_scaling: 'text.character_length'},
 		);
 
-		console.log('dom:', this.dom);
+		return [canvas.implement_into(target), toolbar.implement_into(target)];
 
 	}
 

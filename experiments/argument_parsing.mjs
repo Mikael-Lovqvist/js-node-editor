@@ -31,3 +31,17 @@ export function arguments_to_bins_and_settings() {
 
 	return result_bins.values();
 }
+
+
+
+export function arguments_to_settings() {
+	const settings = new Object();
+
+	for (const arg of arguments) {
+		for (const [key, value] of Object.entries(arg)) {
+			settings[key] = value;
+		}
+	}
+
+	return settings;
+}
